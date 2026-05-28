@@ -301,8 +301,30 @@
   }
   .pix-label {
     font-size: 10px; font-weight: 700; letter-spacing: 3px;
-    text-transform: uppercase; color: #9acc70; margin-bottom: 6px;
+    text-transform: uppercase; color: #9acc70; margin-bottom: 4px;
   }
+  .pix-banco {
+    font-size: 11px; color: var(--sand); margin-bottom: 6px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .btn-copiar {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 7px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 8px 0;
+    transition: background 0.15s;
+  }
+  .btn-copiar:hover { background: var(--orange-bright); }
+  .btn-copiar.copiado { background: #4a7a30; }
   .pix-key {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 28px; letter-spacing: 3px; color: var(--white);
@@ -607,8 +629,10 @@
       </div>
       <div class="pix-box">
         <div class="pix-label">Pagamento via PIX</div>
-        <div class="pix-key">(19) 99185-7383</div>
-        <div class="pix-sub">Telefone · Após inscrição, realize o pagamento e guarde o comprovante.</div>
+        <div class="pix-banco">Banco CORA · CNPJ</div>
+        <div class="pix-key" id="pix-key-text">65.801.090/0001-65</div>
+        <button class="btn-copiar" onclick="copiarPix()">📋 Copiar chave PIX</button>
+        <div class="pix-sub">Titular: CEREZINI SOCIEDADE INDIVIDUAL DE ADVOCACIA<br>Após o pagamento, guarde o comprovante.</div>
       </div>
     </div>
 
@@ -650,8 +674,10 @@
       Seus dados foram registrados com sucesso e seu comprovante foi recebido.<br>
       Guarde também uma cópia do comprovante para apresentar no dia do evento.
     </p>
-    <div class="pix-destaque">(19) 99185-7383</div>
+    <div class="pix-destaque" id="pix-key-success">65.801.090/0001-65</div>
+    <button class="btn-copiar" onclick="copiarPix()" style="margin-bottom:8px;">📋 Copiar chave PIX</button>
     <p style="font-size:13px; color: var(--sand);">
+      Banco CORA · CNPJ · Titular: CEREZINI SOCIEDADE INDIVIDUAL DE ADVOCACIA<br>
       Caso ainda não tenha realizado o PIX, envie para a chave acima e guarde o comprovante.
     </p>
     <hr>
@@ -668,6 +694,22 @@
 </div>
 
 <script>
+function copiarPix() {
+  const chave = '65.801.090/0001-65';
+  navigator.clipboard.writeText(chave).then(() => {
+    document.querySelectorAll('.btn-copiar').forEach(btn => {
+      btn.textContent = '✅ Chave copiada!';
+      btn.classList.add('copiado');
+      setTimeout(() => {
+        btn.textContent = '📋 Copiar chave PIX';
+        btn.classList.remove('copiado');
+      }, 3000);
+    });
+  }).catch(() => {
+    prompt('Copie a chave PIX abaixo:', chave);
+  });
+}
+
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzDBZW2ov7_kfoGsXCZrdXmo0oB_x9-mVyukqpdGAp8uvRx-utVnfFmKc4lgXlGXE8C/exec";
 const radioState = {};
 
